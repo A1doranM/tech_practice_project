@@ -20,8 +20,9 @@ const types = {
   function: (fn, req, res) => JSON.stringify(fn(req, res)),
 };
 
-const key = fs.readFileSync("./utils/cert/privateKey.pem");
+const key = fs.readFileSync("./utils/cert/privateKey.key");
 const cert = fs.readFileSync("./utils/cert/certificate.crt");
+
 const options = { key, cert };
 
 const server = http2.createSecureServer(options, (req, res) => {
