@@ -3,7 +3,6 @@
 const fs = require("node:fs");
 const http2 = require("node:http2");
 
-
 const routing = {
   "/": "<h1>welcome to homepage</h1><hr>",
   "/user": "user",
