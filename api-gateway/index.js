@@ -2,15 +2,10 @@
 
 const fs = require("node:fs");
 const http2 = require("node:http2");
+const RouteBuilder = require("./api-routes/route-builder");
 
-const routing = {
-  "/": "<h1>welcome to homepage</h1><hr>",
-  "/user": "user",
-  "/api/method1": (req, res) => {
-    console.log(req.url + " " + res.statusCode);
-    return { status: res.statusCode };
-  },
-};
+const routing = new RouteBuilder();
+routing.getHTTPRoutes();
 
 const types = {
   object: JSON.stringify,
@@ -33,4 +28,4 @@ const server = http2.createSecureServer(options, (req, res) => {
 });
 
 server.listen(8000);
-console.log("Open: https://127.0.0.1:8000");
+console.log("Open: https://127.0.0.1:8000", RouteBuilder);
