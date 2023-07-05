@@ -4,9 +4,6 @@ const fs = require("node:fs");
 const http2 = require("node:http2");
 const RouteBuilder = require("./api-routes/route-builder");
 
-const routing = new RouteBuilder();
-routing.getHTTPRoutes();
-
 const types = {
   object: JSON.stringify,
   string: (s) => s,
@@ -18,8 +15,10 @@ const key = fs.readFileSync("./utils/cert/privateKey.key");
 const cert = fs.readFileSync("./utils/cert/certificate.crt");
 
 const options = { key, cert };
+const routesBuilder = new RouteBuilder();
 
-const server = http2.createSecureServer(options, (req, res) => {
+const server = http2.createSecureServer(options, async (req, res) => {
+  const routing = await routesBuilder.getHTTPRoutes();
   const data = routing[req.url];
   const type = typeof data;
   const serializer = types[type];
@@ -27,5 +26,5 @@ const server = http2.createSecureServer(options, (req, res) => {
   res.end(result);
 });
 
-server.listen(8000);
-console.log("Open: https://127.0.0.1:8000", RouteBuilder);
+server.listen(8080);
+console.log("Open: https://127.0.0.1:8080", RouteBuilder);
