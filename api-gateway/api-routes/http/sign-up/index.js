@@ -1,5 +1,5 @@
 ({
   signUp(email, password) {
-    signInService.signIn(email, password)
+    signUpService.signUp(email, password)
   }
 })

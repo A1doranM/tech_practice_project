@@ -1,6 +1,6 @@
-const signInService = require("../../../auth-logic/sign-in");
+const signUpService = require("../../../auth-logic/sign-up");
 
 module.exports = {
   console: console,
-  signInService: signInService
+  signInService: signUpService
 }
