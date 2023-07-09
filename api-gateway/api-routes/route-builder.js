@@ -21,14 +21,14 @@ class RouteBuilder {
     return exported;
   }
 
-  async getHTTPRoutes() {
-    const routesDir = await fs.readdir(path.join(__dirname, "http"));
+  async #getRoutes(method) {
+    const routesDir = await fs.readdir(path.join(__dirname, method));
 
     const routes = {};
 
     for (const route of routesDir) {
-      const routeController = await fs.readFile(path.join(__dirname, "http", route, "index.js"));
-      const dependencies = require(path.join(__dirname, "http", route, "dependencies.js"));
+      const routeController = await fs.readFile(path.join(__dirname, method, route, "index.js"));
+      const dependencies = require(path.join(__dirname, method, route, "dependencies.js"));
 
       routes[route] = await this.#load(routeController, dependencies);
     }
@@ -36,6 +36,10 @@ class RouteBuilder {
     console.log("Routes: ", routes);
 
     return routes;
+  }
+
+  async getHTTPRoutes() {
+   return this.#getRoutes("http");
   }
 }
 
