@@ -15,16 +15,23 @@ const key = fs.readFileSync("./utils/cert/privateKey.key");
 const cert = fs.readFileSync("./utils/cert/certificate.crt");
 
 const options = { key, cert };
-const routesBuilder = new RouteBuilder();
 
-const server = http2.createSecureServer(options, async (req, res) => {
-  const routing = await routesBuilder.getHTTPRoutes();
-  const data = routing[req.url];
-  const type = typeof data;
-  const serializer = types[type];
-  const result = serializer(data, req, res);
-  res.end(result);
-});
+try {
+  const routesBuilder = new RouteBuilder();
+  routesBuilder.getHTTPRoutes().then(routing => {
+    const server = http2.createSecureServer(options,  (req, res) => {
+      console.log("Test:");
+      const data = routing[req.url];
+      const type = typeof data;
+      const serializer = types[type];
+      const result = serializer(data, req, res);
+      res.end(result);
+    });
 
-server.listen(8080);
-console.log("Open: https://127.0.0.1:8080", RouteBuilder);
+    server.listen(8080);
+    console.log("Open: https://127.0.0.1:8080", routing);
+  });
+} catch (e) {
+  console.log("Error in project bootstrap: ", e);
+}
+

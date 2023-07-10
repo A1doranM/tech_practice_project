@@ -39,7 +39,7 @@ class RouteBuilder {
   }
 
   async getHTTPRoutes() {
-   return this.#getRoutes("http");
+   return await this.#getRoutes("http");
   }
 }
 
