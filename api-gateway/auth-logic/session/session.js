@@ -13,7 +13,7 @@ class Session extends Map {
 
   static start(client) {
     if (client.session) return client.session;
-    const token = generateToken();
+    const token = crypto.generateUUID();
     client.token = token;
 
     const session = new Session(token); // Создаем новую сессию
